@@ -52,6 +52,8 @@ class Module {
         $tableGateway = $container->get(BasketTable::class);
 
         # Register Filter Plugin Hook
+        CoreEntityController::addHook('contact-view-before',(object)['sFunction'=>'attachBasketForm','oItem'=>new BasketController($oDbAdapter,$tableGateway,$container)]);
+
     }
 
     /**

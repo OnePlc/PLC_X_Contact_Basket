@@ -52,5 +52,60 @@ class BasketController extends CoreEntityController {
     }
 
     # Custom Code here:
+    public function attachBasketForm($oItem = false) {
+
+        $oForm = CoreEntityController::$aCoreTables['core-form']->select(['form_key'=>'contactbasket-single']);
+
+        $aFields = [];
+        $aUserFields = CoreEntityController::$oSession->oUser->getMyFormFields();
+        if(array_key_exists('contactbasket-single',$aUserFields)) {
+            $aFieldsTmp = $aUserFields['contactbasket-single'];
+            if(count($aFieldsTmp) > 0) {
+                # add all contact-base fields
+                foreach($aFieldsTmp as $oField) {
+                    if($oField->tab == 'basket-base') {
+                        $aFields[] = $oField;
+                    }
+                }
+            }
+        }
+        $aFieldsByTab = ['basket-base'=>$aFields];
+
+        # Try to get adress table
+        try {
+            $oBasketTbl = CoreEntityController::$oServiceManager->get(BasketTable::class);
+        } catch(\RuntimeException $e) {
+            echo '<div class="alert alert-danger"><b>Error:</b> Could not load address table</div>';
+            return [];
+        }
+        if(!isset($oBasketTbl)) {
+            return [];
+        }
+
+        $aBaskets = [];
+        $oPrimaryHistory = false;
+        if($oItem) {
+            # load contact addresses
+            $oBaskets = $oBasketTbl->fetchAll(false, ['contact_idfs' => $oItem->getID()]);
+            # get primary address
+            if (count($oBaskets) > 0) {
+                foreach ($oBaskets as $oAddr) {
+                    $aBaskets[] = $oAddr;
+                }
+            }
+        }
+        # Pass Data to View - which will pass it to our partial
+        return [
+            # must be named aPartialExtraData
+            'aPartialExtraData' => [
+                # must be name of your partial
+                'contact_basket'=> [
+                    'oBaskets'=>$aBaskets,
+                    'oForm'=>$oForm,
+                    'aFormFields'=>$aFieldsByTab,
+                ]
+            ]
+        ];
+    }
 
 }

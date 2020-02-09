@@ -1,3 +1,28 @@
-<div class="alert alert-info py-2 px-2">
-    <?=$this->translate('Please do something')?>
-</div>
+
+<?php
+# Only show partial if data is set
+if(array_key_exists('contact_basket',$this->aPartialData)) {
+    # add address form fields
+    $aBaskets = $this->aPartialData['contact_basket']['oBaskets'];
+    $aFields = $this->aPartialData['contact_basket']['aFormFields'];
+
+    if(count($aBaskets) == 0) { ?>
+        <div class="alert alert-info px-2 py-2">
+            <?=$this->translate('No Baskets yet')?>
+        </div>
+    <?php } else { ?>
+        <ul class="list-group">
+            <?php
+            foreach($aBaskets as $oBasket) { ?>
+                <li class="list-group-item">
+                    <div class="row">
+                        <?= $this->partial('partial/viewformfields', ['sFormName' => 'contactbasket-single', 'sTab' => 'basket-base', 'oItem' => $oBasket, 'aFormFieldsByTab' => $aFields]); ?>
+                    </div>
+                </li>
+                <?php
+            }
+            ?>
+        </ul>
+        <?php
+    }
+}
