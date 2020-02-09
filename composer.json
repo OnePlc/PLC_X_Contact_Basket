@@ -19,7 +19,7 @@
   },
   "require": {
     "php": "^7.1",
-    "oneplace/oneplace-basket": "^1.0.6"
+    "oneplace/oneplace-skeleton": "^1.0.6"
   },
   "autoload": {
     "psr-4": {
