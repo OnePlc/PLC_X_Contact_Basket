@@ -2,7 +2,7 @@
   "name": "oneplace/oneplace-contact-basket",
   "description": "onePlace Contact-Basket Plugin. Manage your Basket's basket",
   "type": "oneplace-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "BSD-3-Clause",
   "keywords": [
     "laminas",

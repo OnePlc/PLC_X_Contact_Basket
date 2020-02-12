@@ -2,7 +2,7 @@
 /**
  * module.config.php - Basket Config
  *
- * Main Config File for Basket Basket Plugin
+ * Main Config File for Contact Basket Plugin
  *
  * @category Config
  * @package Contact\Basket
@@ -20,6 +20,21 @@ use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
+    # Basket Module - Routes
+    'router' => [
+        'routes' => [
+            'contact-basket-setup' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/contact/basket/setup',
+                    'defaults' => [
+                        'controller' => Controller\InstallController::class,
+                        'action'     => 'checkdb',
+                    ],
+                ],
+            ],
+        ],
+    ], # Routes
 
     # View Settings
     'view_manager' => [

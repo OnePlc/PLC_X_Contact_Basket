@@ -2,7 +2,7 @@
 /**
  * Module.php - Module Class
  *
- * Module Class File for Basket Basket Plugin
+ * Module Class File for Contact Basket Plugin
  *
  * @category Config
  * @package Contact\Basket
@@ -31,7 +31,7 @@ class Module {
      *
      * @since 1.0.0
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Load module config file
@@ -53,7 +53,6 @@ class Module {
 
         # Register Filter Plugin Hook
         CoreEntityController::addHook('contact-view-before',(object)['sFunction'=>'attachBasketForm','oItem'=>new BasketController($oDbAdapter,$tableGateway,$container)]);
-
     }
 
     /**
@@ -83,7 +82,6 @@ class Module {
     public function getControllerConfig() : array {
         return [
             'factories' => [
-                # Plugin Example Controller
                 Controller\BasketController::class => function($container) {
                     $oDbAdapter = $container->get(AdapterInterface::class);
                     $tableGateway = $container->get(BasketTable::class);
@@ -93,6 +91,15 @@ class Module {
                     return new Controller\BasketController(
                         $oDbAdapter,
                         $tableGateway,
+                        $container
+                    );
+                },
+                # Installer
+                Controller\InstallController::class => function($container) {
+                    $oDbAdapter = $container->get(AdapterInterface::class);
+                    return new Controller\InstallController(
+                        $oDbAdapter,
+                        $container->get(Model\BasketTable::class),
                         $container
                     );
                 },
